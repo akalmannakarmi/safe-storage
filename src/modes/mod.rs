@@ -7,17 +7,18 @@ use std::env;
 
 pub fn get_args() -> Result<Vec<String>, Box<dyn Error>> {
     let mut args: Vec<String> = Vec::new();
+    args.push(String::new());
 
     let get_input = |prompt: &str| -> String {
-        println!("{}", prompt);
+        print!("{}", prompt);
         let mut input = String::new();
         io::stdin().read_line(&mut input).expect("Failed to read line");
         input.trim().to_string()
     };
 
-    args.push(get_input("Enter Mode(-[r/w/a/s/o]):"));
-    args.push(get_input("Enter File Name(text.txt):"));
-    args.push(get_input("Enter File Password:"));
+    args.push(get_input("Enter File Name(text.txt):\n"));
+    args.push(get_input("Enter File Password:\n"));
+    args.push(get_input("Enter Mode(-[r/w/a/s/o]):\n"));
 
     println!("Enter Extra args (enter an empty line to finish):");
     while let Some(line) = Some(get_input("")) {
@@ -32,8 +33,8 @@ pub fn get_args() -> Result<Vec<String>, Box<dyn Error>> {
 
 
 pub fn read(args:Vec<String>) -> Result<(), Box<dyn Error>>{
-    let file_path = args[2].as_str();
-    let password = args[3].as_str();
+    let file_path = args[1].as_str();
+    let password = args[2].as_str();
 
     let data = manager::read(file_path, password)?;
     
@@ -59,8 +60,8 @@ pub fn read(args:Vec<String>) -> Result<(), Box<dyn Error>>{
 }
 
 pub fn write(args:Vec<String>) -> Result<(), Box<dyn Error>>{
-    let file_path = args[2].as_str();
-    let password = args[3].as_str();
+    let file_path = args[1].as_str();
+    let password = args[2].as_str();
 
     let data = fs::read(file_path)?;
     
@@ -73,8 +74,8 @@ pub fn write(args:Vec<String>) -> Result<(), Box<dyn Error>>{
 }
 
 pub fn append(args:Vec<String>) -> Result<(), Box<dyn Error>>{
-    let file_path = args[2].as_str();
-    let password = args[3].as_str();
+    let file_path = args[1].as_str();
+    let password = args[2].as_str();
 
     let mut data:Vec<u8> = manager::read(file_path, password)?;
     data.push(b'\n');
@@ -99,8 +100,8 @@ pub fn append(args:Vec<String>) -> Result<(), Box<dyn Error>>{
 }
 
 pub fn search(args:Vec<String>) -> Result<(), Box<dyn Error>>{
-    let file_path = args[2].as_str();
-    let password = args[3].as_str();
+    let file_path = args[1].as_str();
+    let password = args[2].as_str();
 
     
     let mut input = String::new();
@@ -146,8 +147,8 @@ pub fn search(args:Vec<String>) -> Result<(), Box<dyn Error>>{
 }
 
 pub fn output(args:Vec<String>) -> Result<(), Box<dyn Error>>{
-    let file_path = args[2].as_str();
-    let password = args[3].as_str();
+    let file_path = args[1].as_str();
+    let password = args[2].as_str();
 
     let mut input = String::new();
     let output_path: &str = if args.len() > 4 {

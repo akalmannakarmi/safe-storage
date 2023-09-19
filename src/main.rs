@@ -4,16 +4,16 @@ use std::env;
 
 
 fn main() { 
-    let args: Vec<String> = env::args().collect();
+    let mut args: Vec<String> = env::args().collect();
     
     if args.len()==1{
-        get_args().expect("Failed to get args.");
+        args = get_args().expect("Failed to get args.");
     }else if args.len() < 4 {
-        eprintln!("Usage: cargo run -[r/w/a/s/o] text.txt Mypassword <Extra args>");
+        eprintln!("Usage: cargo run text.txt Mypassword -[r/w/a/s/o] <Extra args>");
         return ();
     }
 
-    let mode = &args[1];
+    let mode = &args[3];
     match mode.as_str() {
         "-r" => {
             read(args).expect("Failed to read.")
